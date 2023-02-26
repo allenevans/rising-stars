@@ -11,7 +11,7 @@ import { favouriteIdsSelector } from './favourite-ids-selector';
 import * as styles from './home-page.module.css';
 
 export const HomePage: React.FC = () => {
-  const { data, error, isLoading, isError } = useRepositoriesQuery('');
+  const { data, error, isLoading, isError } = useRepositoriesQuery({});
   const favouriteIds = useSelector(favouriteIdsSelector, shallowEqual);
 
   const dispatch = useDispatch();
