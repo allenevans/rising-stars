@@ -2,7 +2,11 @@ import React, { Suspense } from 'react';
 import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
 import { axe } from 'jest-axe';
 import { render, screen, waitFor } from '@testing-library/react';
+import { useRepositoriesQuery } from '../../redux/github-search-api';
 import { HomePage } from './home-page';
+
+jest.mock('../../redux/github-search-api');
+(useRepositoriesQuery as jest.Mock).mockReturnValue({ data: { items: [] } });
 
 const mountComponent = (params: { url: string }) => {
   return render(
