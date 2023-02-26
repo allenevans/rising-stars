@@ -1,0 +1,15 @@
+:root {
+  --size-xs: 0.5rem;
+  --size-s: 1rem;
+  --size-m: 1.5rem;
+  --size-l: 2rem;
+  --size-xl: 4rem;
+  --spacing-xs: 0.5rem;
+  --spacing-s: 1rem;
+  --spacing-m: 1.5rem;
+  --spacing-l: 2rem;
+  --spacing-xl: 4rem;
+
+  --gutter: var(--spacing-l);
+  --gutter-mobile: var(--spacing-xs);
+}

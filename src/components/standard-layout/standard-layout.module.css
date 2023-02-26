@@ -1,0 +1,33 @@
+.standardLayout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  > * {
+    flex: 1;
+  }
+
+  > main {
+    padding: 0 var(--gutter-mobile);
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    > * {
+      flex: 1;
+    }
+
+    @media only screen and (min-width: 481px) {
+      padding: 0 var(--gutter);
+    }
+
+    @media only screen and (min-width: 1281px) {
+      width: 80%;
+      align-self: center;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+body {
+  --color-background: #fff;
+  --color-background--mid: #dddddd;
+  --color-background--inverse: #0b5269;
+  --color-border: #ccc;
+  --color-border--light: #fafafa;
+  --color-primary: #0b5269;
+  --color-primary--inverse: #fefefe;
+  --color-primary--disabled: #ccc;
+  --color-primary--disabled--inverse: #fefefe;
+  --color-text: #010101;
+  --color-text--mid: #7c7b82;
+  --color-text--inverse: #fefefe;
+}
+
+

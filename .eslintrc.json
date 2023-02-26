@@ -1,0 +1,46 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "prettier"
+  ],
+  "plugins": [
+    "jsx-a11y",
+    "react-hooks"
+  ],
+  "ignorePatterns": [
+    "**/build/*",
+    "**/dist/*",
+    "**/node_modules/*"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "jest": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "semi": [2, "always"]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/scripts/*.ts"
+      ],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ]
+}

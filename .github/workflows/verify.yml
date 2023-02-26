@@ -1,0 +1,40 @@
+name: verify
+
+on: push
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v3 # https://github.com/actions/checkout/tags
+        with:
+          fetch-depth: 0
+          ref: main
+          clean: true
+
+      - name: Node.js
+        uses: actions/setup-node@v3.6.0 # https://github.com/actions/setup-node/tags
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Configure
+        run: npm install -g yarn
+
+      - name: Bootstrap
+        run: yarn
+
+      - name: Build
+        run: NODE_ENV=production yarn build
+
+      - name: Lint
+        run: NODE_ENV=development yarn lint
+
+      - name: Test
+        run: NODE_ENV=development yarn test

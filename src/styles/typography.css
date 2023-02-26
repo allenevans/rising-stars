@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700;900&family=Ultra&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+:root {
+  --font-size-xs: 1rem;
+  --font-size-s: 1.25rem;
+  --font-size-m: 1.5rem;
+  --font-size-l: 2rem;
+  --font-size-xl: 3rem;
+
+  /* 150% base font size */
+  --font-size-xs--150: 1.5rem;
+  --font-size-s--150: 1.875rem;
+  --font-size-m--150: 2.25rem;
+  --font-size-l--150: 3rem;
+  --font-size-xl--150: 4.5rem;
+
+  --font-family: 'Inter', sans-serif;
+  --font-weight: 400;
+}
+
+html {
+  /* This defines what 1rem is */
+  font-size: 62.5%; /* 1 rem = 10px; 10px/16px = 62.5% */
+  font-family: var(--font-family);
+  font-weight: var(--font-weight);
+}
+
+body {
+  font-size: var(--font-size-m);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--size-m);
+}
+
+h2 {
+  font-size: var(--font-size-l);
+  margin-bottom: var(--size-s);
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-m);
+  font-weight: bold;
+  margin-bottom: var(--size-xs);
+}
+
+textarea {
+  font-family: var(--font-family);
+}
+
+em {
+  font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+section,
+label,
+legend,
+small,
+b,
+i,
+a,
+a:visited {
+  color: var(--color-text);
+  text-decoration: none;
+}
