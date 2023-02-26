@@ -1,56 +1,50 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { LoadingSpinner, RepositoryCard } from '../../components';
 import { StandardLayout } from '../../components/standard-layout';
 import { addFavourite, removeFavourite } from '../../redux/favourites-slice';
 import { useRepositoriesQuery } from '../../redux/github-search-api';
+import type { GithubRepository } from '../../types';
 import { favouriteIdsSelector } from './favourite-ids-selector';
 
 import * as styles from './home-page.module.css';
 
 export const HomePage: React.FC = () => {
-  const { data } = useRepositoriesQuery('');
+  const { data, isLoading } = useRepositoriesQuery('');
   const favouriteIds = useSelector(favouriteIdsSelector, shallowEqual);
 
   const dispatch = useDispatch();
 
+  const handleFavourite = useCallback(
+    (repository: GithubRepository, selected: boolean) => {
+      if (selected) {
+        dispatch(addFavourite(repository));
+      } else {
+        dispatch(removeFavourite(repository.id));
+      }
+    },
+    [dispatch],
+  );
+
   return (
-    <StandardLayout>
+    <StandardLayout className={styles.page}>
       <main className={styles.main}>
-        <h1>Home page</h1>
+        <h1>💫 Rising stars</h1>
+
+        {!data && isLoading && <LoadingSpinner className={styles.loading} />}
 
         {data && (
-          <table>
-            <tbody>
-              {data.items.map((item) => {
-                const checked = favouriteIds.includes(item.id);
+          <ul>
+            {data.items.map((repository) => {
+              const checked = favouriteIds.includes(repository.id);
 
-                return (
-                  <tr key={item.html_url}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        defaultChecked={checked}
-                        onChange={(event) => {
-                          if (event.target.checked) {
-                            dispatch(addFavourite(item));
-                          } else {
-                            dispatch(removeFavourite(item.id));
-                          }
-                        }}
-                      />
-                    </td>
-                    <td>
-                      <a href={item.html_url} target="_blank" rel="noreferrer">
-                        {item.full_name}
-                      </a>
-                      <p>{item.description}</p>
-                    </td>
-                    <td>{item.stargazers_count}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+              return (
+                <li key={repository.id}>
+                  <RepositoryCard favourite={checked} repository={repository} onFavourite={handleFavourite} />
+                </li>
+              );
+            })}
+          </ul>
         )}
       </main>
     </StandardLayout>

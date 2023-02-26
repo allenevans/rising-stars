@@ -1,11 +1,16 @@
+.page {
+  background: linear-gradient(135deg, #f4f3fc 0%, #f4f3fc 5%,transparent 5%, transparent 10%, #f4f3fc 10%, #f4f3fc 15%,transparent 15%,transparent 20%, #f4f3fc 20%, #f4f3fc 25%,transparent 25%,transparent 30%, #f4f3fc 30%, #f4f3fc 35%,transparent 35%,transparent 40%, #f4f3fc 40%, #f4f3fc 45%,transparent 45%,transparent 50%, #f4f3fc 50%, #f4f3fc 55%,transparent 55%,transparent 60%, #f4f3fc 60%, #f4f3fc 65%,transparent 65%,transparent 70%, #f4f3fc 70%, #f4f3fc 75%,transparent 70%,transparent 80%, #f4f3fc 80%, #f4f3fc 85%,transparent 85%,transparent 90%, #f4f3fc 90%, #f4f3fc 95%,transparent 95%);
+  background-size: 3em 3em;
+  background-color: #ffffff;
+  opacity: 1;
+}
+
 main.main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: left;
 
-  > * {
-    flex: 0;
-  }
+  padding-top: var(--spacing-xl);
+}
 
-  text-align: center;
+.loading {
+  align-self: center;
 }

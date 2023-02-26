@@ -7,7 +7,7 @@ export type GithubRepository = {
 
   html_url: string;
 
-  language: string;
+  language?: string;
 
   stargazers_count: number;
 };
