@@ -1,0 +1,24 @@
+.errorSummary {
+  width: 100%;
+  align-self: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  > * {
+    flex: 0 0 auto;
+    margin: var(--spacing-l) 0;
+  }
+}
+
+svg.icon {
+  max-width: 8rem;
+}
+
+a.refresh, a.refresh:visited {
+  color: var(--color-primary);
+  display: inline-block;
+  text-decoration: underline;
+}

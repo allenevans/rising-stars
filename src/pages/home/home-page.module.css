@@ -14,3 +14,7 @@ main.main {
 .loading {
   align-self: center;
 }
+
+h1.title {
+  flex: 0;
+}

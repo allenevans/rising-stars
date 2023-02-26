@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { LoadingSpinner, RepositoryCard } from '../../components';
+import { ErrorSummary } from '../../components/error-summary/error-summary';
 import { StandardLayout } from '../../components/standard-layout';
 import { addFavourite, removeFavourite } from '../../redux/favourites-slice';
 import { useRepositoriesQuery } from '../../redux/github-search-api';
@@ -10,7 +11,7 @@ import { favouriteIdsSelector } from './favourite-ids-selector';
 import * as styles from './home-page.module.css';
 
 export const HomePage: React.FC = () => {
-  const { data, isLoading } = useRepositoriesQuery('');
+  const { data, error, isLoading, isError } = useRepositoriesQuery('');
   const favouriteIds = useSelector(favouriteIdsSelector, shallowEqual);
 
   const dispatch = useDispatch();
@@ -29,9 +30,10 @@ export const HomePage: React.FC = () => {
   return (
     <StandardLayout className={styles.page}>
       <main className={styles.main}>
-        <h1>💫 Rising stars</h1>
+        <h1 className={styles.title}>💫 Rising stars</h1>
 
         {!data && isLoading && <LoadingSpinner className={styles.loading} />}
+        {isError && <ErrorSummary error={(error as { error?: string })?.error ?? 'Unknown'} />}
 
         {data && (
           <ul>
