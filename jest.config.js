@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { join } = require('path');
 const { register } = require('ts-node');
 register(require('./tsconfig.json'));
 

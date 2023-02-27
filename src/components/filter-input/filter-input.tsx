@@ -68,8 +68,6 @@ export const FilterInput: React.FC<FilterInputProps> = ({ className, filter, onC
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
     (event) => {
-      console.log(event, inputRef.current?.value);
-
       if (!inputRef.current) {
         return;
       }

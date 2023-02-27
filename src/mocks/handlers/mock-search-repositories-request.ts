@@ -3,7 +3,6 @@ import mockResponse from './mock-search-repositories-response.json';
 
 export const mockSearchRepositoriesRequest = [
   rest.get('https://api.github.com/search/repositories', (req, res, ctx) => {
-    const s = req.url.toString();
     const [, filterByLanguage] = req.url.searchParams.get('q')?.match(/language[:=](\S+)/) ?? [];
 
     const payload = {

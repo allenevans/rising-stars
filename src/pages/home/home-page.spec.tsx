@@ -10,7 +10,7 @@ import { HomePage } from './home-page';
 
 import mockData from '../../mocks/handlers/mock-search-repositories-response.json';
 
-const mountComponent = (params: { url: string }, renderer: any = render) => {
+const mountComponent = (params: { url: string }, renderer: typeof render = render) => {
   const history = createMemoryHistory({
     initialEntries: [params.url],
   });
@@ -114,7 +114,7 @@ describe('HomePage', () => {
         /* await dispatch to load data */
       });
 
-      mountComponent({ url: '?lang=JavaScript' }, rerender);
+      mountComponent({ url: '?lang=JavaScript' }, rerender as typeof render);
 
       await act(() => {
         /* await dispatch to load data */

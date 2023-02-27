@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 import cn from 'classnames';
-import styles from './tag.module.css';
+import * as styles from './tag.module.css';
 
 export interface TagProps {
   children: ReactNode;

@@ -24,7 +24,7 @@ yarn test
 - [Parcel](https://parceljs.org/)
 - [Jest](https://jestjs.io/)
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
-
+- [Redux Toolkit](https://redux-toolkit.js.org/introduction/getting-started) + [RTK Query](https://redux-toolkit.js.org/tutorials/rtk-query)
 
 ## Icons and Illustrations
 
