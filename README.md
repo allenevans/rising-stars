@@ -17,6 +17,9 @@ yarn lint
 yarn test
 ```
 
+## Demo
+![Large GIF (970x670)](https://user-images.githubusercontent.com/1807492/221625897-90368ff7-d104-4e09-9679-0decf2f381bd.gif)
+
 ## Core Tech Stack
 
 - [TypeScript](https://www.typescriptlang.org/)
