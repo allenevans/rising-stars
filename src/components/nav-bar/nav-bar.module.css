@@ -1,0 +1,13 @@
+.navBar {
+  display: flex;
+  align-items: flex-start;
+
+  > * {
+    flex: 1;
+    padding: var(--spacing-m);
+  }
+}
+
+.selected {
+  border-bottom: 2px solid var(--color-primary);
+}

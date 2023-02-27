@@ -18,3 +18,8 @@ main.main {
 h1.title {
   flex: 0;
 }
+
+nav.navBar {
+  margin-bottom: var(--spacing-m);
+  flex: 0;
+}
