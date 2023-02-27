@@ -10,6 +10,11 @@ const API_BASE_ENDPOINT = `https://api.github.com/search`;
 
 type GithubSearchApiParams = {
   /**
+   * Filter repositories by language
+   */
+  languages?: string[];
+
+  /**
    * Date since repositories were created in the format YYYY-MM-DD.
    * Defaults to past 7 days;
    */
@@ -24,9 +29,14 @@ export const githubSearchApi = createApi({
   endpoints: (builder) => ({
     repositories: builder.query<GithubRepositorySearchResponse, GithubSearchApiParams>({
       query: (params) => {
-        const url = new URL(`${API_BASE_ENDPOINT}/repositories?&sort=stars&order=desc`);
+        const url = new URL(`${API_BASE_ENDPOINT}/repositories?sort=stars&order=desc`);
+        let gitQuery = `created:>${params?.since ?? SINCE_DEFAULT}`;
 
-        url.searchParams.set('q', `created:>${params?.since ?? SINCE_DEFAULT}`);
+        (params.languages ?? []).forEach((lang) => {
+          gitQuery += ` language:${lang}`;
+        });
+
+        url.searchParams.set('q', gitQuery);
 
         return url.toString();
       },

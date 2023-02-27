@@ -1,7 +1,14 @@
 import React, { useCallback } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { useLocation, useSearchParams } from 'react-router-dom';
-import { LoadingSpinner, RepositoryCard } from '../../components';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import type { Filter } from '../../components';
+import {
+  filterFromQueryStringParams,
+  FilterInput,
+  filterToQueryStringParams,
+  LoadingSpinner,
+  RepositoryCard,
+} from '../../components';
 import { ErrorSummary } from '../../components/error-summary/error-summary';
 import { NavBar } from '../../components/nav-bar/nav-bar';
 import { StandardLayout } from '../../components/standard-layout';
@@ -17,9 +24,9 @@ enum QueryStringParams {
 }
 
 export const HomePage: React.FC = () => {
-  const location = useLocation();
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
-  const { data, error, isLoading, isError } = useRepositoriesQuery({});
+  const navigate = useNavigate();
   const favouriteIds = useSelector(favouriteIdsSelector, shallowEqual);
   const favourites = useSelector(favouritesSelector, shallowEqual);
 
@@ -29,9 +36,6 @@ export const HomePage: React.FC = () => {
   favouriteSearchParams.set(QueryStringParams.favourites, 'true');
 
   const showFavourites = searchParams.get(QueryStringParams.favourites) === 'true';
-  const repositories = (showFavourites ? favourites : data?.items) ?? [];
-
-  const dispatch = useDispatch();
 
   const handleFavourite = useCallback(
     (repository: GithubRepository, selected: boolean) => {
@@ -44,33 +48,84 @@ export const HomePage: React.FC = () => {
     [dispatch],
   );
 
+  const handleLanguageSelect = useCallback(
+    (language: string) => {
+      const existing = searchParams.getAll('lang');
+
+      if (existing.includes(language)) {
+        return;
+      }
+
+      const nextSearchParams = new URLSearchParams(searchParams);
+      nextSearchParams.append('lang', language);
+
+      navigate(`?${nextSearchParams}`);
+    },
+    [navigate, searchParams],
+  );
+
+  const handleFilterChange = useCallback(
+    (filter: Filter) => {
+      navigate(`?${filterToQueryStringParams(filter)}`, { replace: true });
+    },
+    [navigate],
+  );
+
+  const filter = filterFromQueryStringParams(searchParams);
+
+  const { data, error, isLoading, isError } = useRepositoriesQuery({
+    languages: filter.languages,
+    since: filter.since?.toISOString().substring(0, 10),
+  });
+  const repositories = (showFavourites ? favourites : data?.items) ?? [];
+
+  const showLoadingSpinner = !data && isLoading && !showFavourites;
+
   return (
     <StandardLayout className={styles.page}>
       <main className={styles.main}>
         <h1 className={styles.title}>💫 Rising stars</h1>
 
-        {!data && isLoading && <LoadingSpinner className={styles.loading} />}
         {isError && <ErrorSummary error={(error as { error?: string })?.error ?? 'Unknown'} />}
 
-        <NavBar
-          className={styles.navBar}
-          tabs={[
-            { url: `/?${allSearchParams}`, name: 'All', selected: !showFavourites },
-            { url: `/?${favouriteSearchParams}`, name: 'Favourites', selected: showFavourites },
-          ]}
-        />
+        {!isError && (
+          <NavBar
+            className={styles.navBar}
+            tabs={[
+              { url: `/?${allSearchParams}`, name: 'All', selected: !showFavourites },
+              { url: `/?${favouriteSearchParams}`, name: 'Favourites', selected: showFavourites },
+            ]}
+          />
+        )}
 
-        <ul>
-          {repositories.map((repository) => {
-            const checked = favouriteIds.includes(repository.id);
+        {!isError && (
+          <FilterInput
+            className={styles.filterInput}
+            filter={filterFromQueryStringParams(searchParams)}
+            onChange={handleFilterChange}
+          />
+        )}
 
-            return (
-              <li key={repository.id}>
-                <RepositoryCard favourite={checked} repository={repository} onFavourite={handleFavourite} />
-              </li>
-            );
-          })}
-        </ul>
+        {showLoadingSpinner && <LoadingSpinner className={styles.loading} />}
+
+        {!isLoading && (
+          <ul className={styles.repositoryCardList}>
+            {repositories.map((repository) => {
+              const checked = favouriteIds.includes(repository.id);
+
+              return (
+                <li key={repository.id}>
+                  <RepositoryCard
+                    favourite={checked}
+                    repository={repository}
+                    onFavourite={handleFavourite}
+                    onLanguageSelect={handleLanguageSelect}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </main>
     </StandardLayout>
   );

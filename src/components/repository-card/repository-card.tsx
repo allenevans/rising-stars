@@ -10,12 +10,15 @@ export interface RepositoryCardProps {
 
   onFavourite?: (repository: GithubRepository, selected: boolean) => void;
 
+  onLanguageSelect?: (language: string) => void;
+
   repository: GithubRepository;
 }
 
 export const RepositoryCard: React.FC<RepositoryCardProps> = ({
   favourite,
   onFavourite,
+  onLanguageSelect,
   repository,
 }: RepositoryCardProps) => {
   const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -23,6 +26,13 @@ export const RepositoryCard: React.FC<RepositoryCardProps> = ({
       onFavourite?.(repository, event.target.checked);
     },
     [onFavourite, repository],
+  );
+
+  const handleLanguageTagClick = useCallback(
+    (language: string) => {
+      onLanguageSelect?.(language);
+    },
+    [onLanguageSelect],
   );
 
   return (
@@ -39,7 +49,7 @@ export const RepositoryCard: React.FC<RepositoryCardProps> = ({
           <dd className={styles.description}>{repository.description}</dd>
           {repository.language && (
             <dd>
-              <Tag>{repository.language}</Tag>
+              <Tag onClick={handleLanguageTagClick.bind(null, repository.language)}>{repository.language}</Tag>
             </dd>
           )}
         </div>
