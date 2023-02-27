@@ -8,7 +8,7 @@ export interface StandardLayoutProps {
   pageTitle?: string;
 }
 
-const PAGE_TITLE_SUFFIX = '💫 Rising Stars';
+const PAGE_TITLE_SUFFIX = '💫 Rising stars';
 
 export function StandardLayout({ children, className, pageTitle }: StandardLayoutProps) {
   if (typeof document !== 'undefined') {

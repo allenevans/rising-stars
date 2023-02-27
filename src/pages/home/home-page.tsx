@@ -2,26 +2,22 @@ import React, { useCallback } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import type { Filter } from '../../components';
+import { NavBar, StandardLayout } from '../../components';
 import {
   filterFromQueryStringParams,
   FilterInput,
   filterToQueryStringParams,
   LoadingSpinner,
-  RepositoryCard,
+  RepositoryCardList,
 } from '../../components';
 import { ErrorSummary } from '../../components/error-summary/error-summary';
-import { NavBar } from '../../components/nav-bar/nav-bar';
-import { StandardLayout } from '../../components/standard-layout';
 import { addFavourite, removeFavourite } from '../../redux/favourites-slice';
 import { useRepositoriesQuery } from '../../redux/github-search-api';
 import type { GithubRepository } from '../../types';
+import { QueryStringParams } from '../../types';
 import { favouriteIdsSelector, favouritesSelector } from './favourites-selectors';
 
 import * as styles from './home-page.module.css';
-
-enum QueryStringParams {
-  favourites = 'favourites',
-}
 
 export const HomePage: React.FC = () => {
   const dispatch = useDispatch();
@@ -48,14 +44,14 @@ export const HomePage: React.FC = () => {
 
   const handleLanguageSelect = useCallback(
     (language: string) => {
-      const existing = searchParams.getAll('lang');
+      const existing = searchParams.getAll(QueryStringParams.lang);
 
-      if (existing.includes(language)) {
+      if (existing.find((lang) => lang.toLowerCase === language.toLowerCase)) {
         return;
       }
 
       const nextSearchParams = new URLSearchParams(searchParams);
-      nextSearchParams.append('lang', language);
+      nextSearchParams.append(QueryStringParams.lang, language);
 
       navigate(`?${nextSearchParams}`);
     },
@@ -64,7 +60,9 @@ export const HomePage: React.FC = () => {
 
   const handleFilterChange = useCallback(
     (filter: Filter) => {
-      navigate(`?${filterToQueryStringParams(filter)}`, { replace: true });
+      const params = filterToQueryStringParams(filter);
+
+      navigate(`?${params}`, { replace: true });
     },
     [navigate],
   );
@@ -81,6 +79,8 @@ export const HomePage: React.FC = () => {
   const repositories = (showFavourites ? favourites : data?.items) ?? ([] as GithubRepository[]);
 
   const showLoadingSpinner = isFetching && !showFavourites;
+  const showRepositoryList = showFavourites || (!isError && !isFetching);
+  const showError = isError && !showFavourites;
 
   return (
     <StandardLayout className={styles.page}>
@@ -89,17 +89,15 @@ export const HomePage: React.FC = () => {
           <Link to="/"> 💫 Rising stars</Link>
         </h1>
 
-        {isError && <ErrorSummary error={apiError.error ?? apiError.message ?? 'Unknown'} />}
+        <NavBar
+          className={styles.navBar}
+          tabs={[
+            { url: `/?${allSearchParams}`, name: 'All', selected: !showFavourites },
+            { url: `/?${favouriteSearchParams}`, name: 'Favourites', selected: showFavourites },
+          ]}
+        />
 
-        {!isError && (
-          <NavBar
-            className={styles.navBar}
-            tabs={[
-              { url: `/?${allSearchParams}`, name: 'All', selected: !showFavourites },
-              { url: `/?${favouriteSearchParams}`, name: 'Favourites', selected: showFavourites },
-            ]}
-          />
-        )}
+        {showError && <ErrorSummary error={apiError.error ?? apiError.message ?? 'Unknown'} />}
 
         {!isError && (
           <FilterInput
@@ -111,23 +109,13 @@ export const HomePage: React.FC = () => {
 
         {showLoadingSpinner && <LoadingSpinner className={styles.loading} />}
 
-        {!isFetching && (
-          <ul className={styles.repositoryCardList}>
-            {repositories.map((repository) => {
-              const checked = favouriteIds.includes(repository.id);
-
-              return (
-                <li key={repository.id}>
-                  <RepositoryCard
-                    favourite={checked}
-                    repository={repository}
-                    onFavourite={handleFavourite}
-                    onLanguageSelect={handleLanguageSelect}
-                  />
-                </li>
-              );
-            })}
-          </ul>
+        {showRepositoryList && (
+          <RepositoryCardList
+            favouriteIds={favouriteIds}
+            repositories={repositories}
+            onFavourite={handleFavourite}
+            onLanguageSelect={handleLanguageSelect}
+          />
         )}
       </main>
     </StandardLayout>

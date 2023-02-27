@@ -6,7 +6,7 @@ import type { Filter } from './filter';
 import * as styles from './filter-input.module.css';
 import { mergeFilters, parseStringToFilter } from './filter-utils';
 
-const DEFAULT_INPUT_SIZE = 20;
+const DEFAULT_INPUT_SIZE = 40;
 
 export interface FilterInputProps {
   className?: string;
@@ -116,7 +116,7 @@ export const FilterInput: React.FC<FilterInputProps> = ({ className, filter, onC
         ))}
       </ul>
       <div className={styles.inputContainer}>
-        <label>
+        <label className={styles.inputLabel}>
           &gt;
           <input
             type="text"
@@ -132,6 +132,7 @@ export const FilterInput: React.FC<FilterInputProps> = ({ className, filter, onC
 
               inputRef.current.size = Math.max(DEFAULT_INPUT_SIZE, inputRef.current.value.length);
             }}
+            placeholder="Filter e.g. language=TypeScript"
           />
         </label>
       </div>

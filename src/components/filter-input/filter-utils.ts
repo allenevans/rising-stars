@@ -1,28 +1,29 @@
+import { QueryStringParams } from '../../types';
 import type { Filter } from './filter';
 
 export const filterToQueryStringParams = (filter: Filter): URLSearchParams => {
   const params = new URLSearchParams();
 
   if (filter.favourites) {
-    params.set('favourites', 'true');
+    params.set(QueryStringParams.favourites, 'true');
   }
 
   if (filter.languages) {
-    filter.languages.forEach((lang) => params.append('lang', lang));
+    filter.languages.forEach((lang) => params.append(QueryStringParams.lang, lang));
   }
 
   if (filter.since) {
-    params.set('since', filter.since.toISOString().substring(0, 10));
+    params.set(QueryStringParams.since, filter.since.toISOString().substring(0, 10));
   }
 
   return params;
 };
 export const filterFromQueryStringParams = (params: URLSearchParams): Filter => {
-  const parsedSince = Date.parse(params.get('since') ?? '');
+  const parsedSince = Date.parse(params.get(QueryStringParams.since) ?? '');
 
   const filter: Filter = {
-    favourites: params.get('favourites') === 'true',
-    languages: params.getAll('lang'),
+    favourites: params.get(QueryStringParams.favourites) === 'true',
+    languages: params.getAll(QueryStringParams.lang),
     since: isNaN(parsedSince) ? undefined : new Date(parsedSince),
   };
 

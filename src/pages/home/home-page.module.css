@@ -29,7 +29,3 @@ div.filterInput {
   margin-bottom: var(--spacing-m);
   flex: 0;
 }
-
-.repositoryCardList {
-  width: 100%;
-}
