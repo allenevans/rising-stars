@@ -23,5 +23,5 @@ module.exports = {
   testEnvironmentOptions: {
     url: 'http://localhost/',
   },
-  setupFilesAfterEnv: [join(__dirname, './jest.extensions.ts')],
+  setupFilesAfterEnv: ['@testing-library/jest-dom', './jest.setup.ts'],
 };

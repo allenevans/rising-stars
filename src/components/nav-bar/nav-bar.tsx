@@ -21,7 +21,12 @@ export const NavBar: React.FC<NavBarProps> = ({ className, tabs }: NavBarProps) 
   return (
     <nav className={cn(styles.navBar, className)}>
       {tabs.map((tab) => (
-        <Link key={tab.url} className={cn({ [styles.selected]: tab.selected })} to={tab.url}>
+        <Link
+          key={tab.url}
+          className={cn({ [styles.selected]: tab.selected })}
+          to={tab.url}
+          data-testid={`navbar-${tab.name.toLowerCase()}`}
+        >
           {tab.name}
         </Link>
       ))}

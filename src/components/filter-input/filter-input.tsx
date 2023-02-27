@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import type { FocusEventHandler, KeyboardEventHandler} from 'react';
+import type { FocusEventHandler, KeyboardEventHandler } from 'react';
 import React, { useCallback, useRef } from 'react';
 import { Tag } from '../tag';
 import type { Filter } from './filter';
@@ -118,22 +118,24 @@ export const FilterInput: React.FC<FilterInputProps> = ({ className, filter, onC
         ))}
       </ul>
       <div className={styles.inputContainer}>
-        <span>&gt;</span>
-        <input
-          type="text"
-          className={styles.input}
-          ref={inputRef}
-          onKeyDown={handleKeyDown}
-          size={DEFAULT_INPUT_SIZE}
-          onBlur={handleBlur}
-          onInput={() => {
-            if (!inputRef?.current) {
-              return;
-            }
+        <label>
+          &gt;
+          <input
+            type="text"
+            className={styles.input}
+            ref={inputRef}
+            onKeyDown={handleKeyDown}
+            size={DEFAULT_INPUT_SIZE}
+            onBlur={handleBlur}
+            onInput={() => {
+              if (!inputRef?.current) {
+                return;
+              }
 
-            inputRef.current.size = Math.max(DEFAULT_INPUT_SIZE, inputRef.current.value.length);
-          }}
-        />
+              inputRef.current.size = Math.max(DEFAULT_INPUT_SIZE, inputRef.current.value.length);
+            }}
+          />
+        </label>
       </div>
     </div>
   );

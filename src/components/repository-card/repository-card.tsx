@@ -41,8 +41,8 @@ export const RepositoryCard: React.FC<RepositoryCardProps> = ({
         {favourite ? '❤️' : '🤍'}
         <input type="checkbox" defaultChecked={favourite} onChange={handleChange} />
       </label>
-      <dl className={styles.detailContainer}>
-        <div className={styles.detail}>
+      <div className={styles.detailContainer}>
+        <dl className={styles.detail}>
           <dt className={styles.title}>
             <a href={repository.html_url} target="_blank" rel="noreferrer">
               {repository.full_name}
@@ -54,9 +54,9 @@ export const RepositoryCard: React.FC<RepositoryCardProps> = ({
               <Tag onClick={handleLanguageTagClick.bind(null, repository.language)}>{repository.language}</Tag>
             </dd>
           )}
-        </div>
-        <dd className={styles.stars}>{repository.stargazers_count} ⭐️</dd>
-      </dl>
+        </dl>
+        <div className={styles.stars}>{repository.stargazers_count} ⭐️</div>
+      </div>
     </div>
   );
 };

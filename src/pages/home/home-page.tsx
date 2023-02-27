@@ -73,13 +73,14 @@ export const HomePage: React.FC = () => {
 
   const favouriteIds = useSelector(favouriteIdsSelector, shallowEqual);
   const favourites = useSelector(favouritesSelector({ languages: filter.languages }), shallowEqual);
-  const { data, error, isLoading, isError } = useRepositoriesQuery({
+  const { data, error, isError, isFetching } = useRepositoriesQuery({
     languages: filter.languages,
     since: filter.since?.toISOString().substring(0, 10),
   });
+  const apiError = error as { error?: string } & Error;
   const repositories = (showFavourites ? favourites : data?.items) ?? ([] as GithubRepository[]);
 
-  const showLoadingSpinner = !data && isLoading && !showFavourites;
+  const showLoadingSpinner = isFetching && !showFavourites;
 
   return (
     <StandardLayout className={styles.page}>
@@ -88,7 +89,7 @@ export const HomePage: React.FC = () => {
           <Link to="/"> 💫 Rising stars</Link>
         </h1>
 
-        {isError && <ErrorSummary error={(error as { error?: string })?.error ?? 'Unknown'} />}
+        {isError && <ErrorSummary error={apiError.error ?? apiError.message ?? 'Unknown'} />}
 
         {!isError && (
           <NavBar
@@ -110,7 +111,7 @@ export const HomePage: React.FC = () => {
 
         {showLoadingSpinner && <LoadingSpinner className={styles.loading} />}
 
-        {!isLoading && (
+        {!isFetching && (
           <ul className={styles.repositoryCardList}>
             {repositories.map((repository) => {
               const checked = favouriteIds.includes(repository.id);
