@@ -44,7 +44,9 @@ export const RepositoryCard: React.FC<RepositoryCardProps> = ({
       <dl className={styles.detailContainer}>
         <div className={styles.detail}>
           <dt className={styles.title}>
-            <a href={repository.html_url}>{repository.full_name} </a>
+            <a href={repository.html_url} target="_blank" rel="noreferrer">
+              {repository.full_name}
+            </a>
           </dt>
           <dd className={styles.description}>{repository.description}</dd>
           {repository.language && (

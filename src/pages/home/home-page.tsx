@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import type { Filter } from '../../components';
 import {
   filterFromQueryStringParams,
@@ -27,8 +27,6 @@ export const HomePage: React.FC = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const favouriteIds = useSelector(favouriteIdsSelector, shallowEqual);
-  const favourites = useSelector(favouritesSelector, shallowEqual);
 
   const allSearchParams = new URLSearchParams(searchParams);
   allSearchParams.delete(QueryStringParams.favourites);
@@ -73,18 +71,22 @@ export const HomePage: React.FC = () => {
 
   const filter = filterFromQueryStringParams(searchParams);
 
+  const favouriteIds = useSelector(favouriteIdsSelector, shallowEqual);
+  const favourites = useSelector(favouritesSelector({ languages: filter.languages }), shallowEqual);
   const { data, error, isLoading, isError } = useRepositoriesQuery({
     languages: filter.languages,
     since: filter.since?.toISOString().substring(0, 10),
   });
-  const repositories = (showFavourites ? favourites : data?.items) ?? [];
+  const repositories = (showFavourites ? favourites : data?.items) ?? ([] as GithubRepository[]);
 
   const showLoadingSpinner = !data && isLoading && !showFavourites;
 
   return (
     <StandardLayout className={styles.page}>
       <main className={styles.main}>
-        <h1 className={styles.title}>💫 Rising stars</h1>
+        <h1 className={styles.title}>
+          <Link to="/"> 💫 Rising stars</Link>
+        </h1>
 
         {isError && <ErrorSummary error={(error as { error?: string })?.error ?? 'Unknown'} />}
 
